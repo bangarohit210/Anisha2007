@@ -1,6 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import streamlit as st
+import seaborn as sns
+
 
 st.sidebar.markdown("🚴Bike Sales Data Analysis")
 menu = st.sidebar.radio("Navigation",( "🏠 Home","📊 Data Overview","📈 Revenue Analysis" , "📉 Data Visualizations", ))
