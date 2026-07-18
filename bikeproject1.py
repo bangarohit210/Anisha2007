@@ -15,32 +15,32 @@ if menu=="🏠 Home":
     with col2:
         st.image("bike2.jpg",width=280)
 
-st.title("📊 Data Overview")
-
-st.markdown("""
-The **Data Overview** section provides a summary of the bike sales dataset.
-It helps users understand the dataset's structure, including the number of records,
-columns, data types, and missing values before performing detailed analysis.
-""")
-
-
-# Upload CSV file
-uploaded_file = st.file_uploader(
-    "📁 Upload Bike Sales Dataset (sales_data.csv)",
-    type=["csv"]
-)
-
-if uploaded_file is not None:
-    # Read CSV
-    df = pd.read_csv(uploaded_file)
-
-    st.success("✅ Dataset uploaded successfully!")
-
-    # Preview
-    st.subheader("Dataset Preview")
-    st.dataframe(df.head())
-
-    # Shape
-    st.subheader("Dataset Shape")
-    st.write(f"**Rows:** {df.shape[0]}")
+        st.title("📊 Data Overview")
+        
+        st.markdown("""
+        The **Data Overview** section provides a summary of the bike sales dataset.
+        It helps users understand the dataset's structure, including the number of records,
+        columns, data types, and missing values before performing detailed analysis.
+        """)
+        
+        
+        # Upload CSV file
+        uploaded_file = st.file_uploader(
+            "📁 Upload Bike Sales Dataset (sales_data.csv)",
+            type=["csv"]
+        )
+        
+        if uploaded_file is not None:
+            # Read CSV
+            df = pd.read_csv(uploaded_file)
+        
+            st.success("✅ Dataset uploaded successfully!")
+        
+            # Preview
+            st.subheader("Dataset Preview")
+            st.dataframe(df.head())
+        
+            # Shape
+            st.subheader("Dataset Shape")
+            st.write(f"**Rows:** {df.shape[0]}")
     st.write(f"**Columns:** {df.shape[1]}")
