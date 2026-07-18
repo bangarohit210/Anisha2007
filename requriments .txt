@@ -1,5 +1,7 @@
-pandas  
-streamlit 
+streamlit
+pandas
+numpy
 matplotlib
-seaborn
 plotly
+seaborn
+pillow
