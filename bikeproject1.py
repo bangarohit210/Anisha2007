@@ -1,7 +1,7 @@
 import pandas as pd
 # import seaborn as sns
 # import matplotlib.pyplot as plt
-import plotly .express as px
+# import plotly .express as px
 import streamlit as st
 
 st.sidebar.markdown("🚴Bike Sales Data Analysis")
