@@ -537,7 +537,7 @@ elif menu=="Data Visualizations":
 
     colors = ["#00C853", "#2979FF", "#FFD600"]   # Green, Blue, Yellow
 
-    plt.figure(figsize=(8,6), facecolor="black")
+    plt.figure(plt.figure(figsize=(8,5)), facecolor="black")
 
     plt.pie(
     data.values,
