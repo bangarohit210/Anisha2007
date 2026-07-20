@@ -11,7 +11,7 @@ st.set_page_config("Bike Sales Analysis","🚵" , layout= "wide")
 with st.sidebar:
     menu = option_menu(
         "Navigation",
-        ["Home", "Dashboard", "Data Overview", "Revenue Analysis", "Data Visualizations","Insights"],
+        [ "Dashboard", "Data Overview", "Revenue Analysis", "Data Visualizations","Insights"],
         icons=["house", "speedometer2", "table", "graph-up", "bar-chart","lightbulb"   ],
         default_index=0,
         styles={
@@ -58,24 +58,24 @@ except:
     st.error("Dataset file not found")
     st.stop()
 
-if menu=="Home":
-    st.title("🚴Bike Sales Data Analysis")
-    st.markdown("The Bike Sales Data Analysis project is a Data Science dashboard that analyzes bike sales data to provide valuable business insights. It helps users understand sales performance, revenue trends, customer behavior, product categories, and regional sales through interactive charts and visualizations. The dashboard is developed using Python, Pandas, Plotly, and Streamlit to make data analysis simple, clear, and interactive.")
-    col1,col2=st.columns(2)
-    with col1:
-        st.image("bike3.jpg",width=300)
-    with col2:
-        st.image("bike2.jpg",width=280)
-        # Project Objectives
-    st.header("🎯 Project Objectives")
+# if menu=="Home":
+#     st.title("🚴Bike Sales Data Analysis")
+#     st.markdown("The Bike Sales Data Analysis project is a Data Science dashboard that analyzes bike sales data to provide valuable business insights. It helps users understand sales performance, revenue trends, customer behavior, product categories, and regional sales through interactive charts and visualizations. The dashboard is developed using Python, Pandas, Plotly, and Streamlit to make data analysis simple, clear, and interactive.")
+#     col1,col2=st.columns(2)
+#     with col1:
+#         st.image("bike3.jpg",width=300)
+#     with col2:
+#         st.image("bike2.jpg",width=280)
+#         # Project Objectives
+#     st.header("🎯 Project Objectives")
 
-    st.write(" Analyze bike sales performance.")
-    st.write(" Identify revenue and profit trends.")
-    st.write(" Compare product categories.")
-    st.write(" Understand customer purchasing behavior.")
-    st.write("Support better business decisions")
+#     st.write(" Analyze bike sales performance.")
+#     st.write(" Identify revenue and profit trends.")
+#     st.write(" Compare product categories.")
+#     st.write(" Understand customer purchasing behavior.")
+#     st.write("Support better business decisions")
 
-elif menu == "Dashboard":
+if menu == "Dashboard":
 
     st.title("📋 Bike Sales Dashboard")
     st.markdown("---")
@@ -136,10 +136,92 @@ elif menu == "Dashboard":
             color_discrete_sequence=px.colors.qualitative.Bold,
             title="Top 5 Countries"
         )
+        st.plotly_chart(fig, use_container_width=True)
+
+
+    col3, col4 = st.columns(2)
+    with col3:
+
+        age = df.groupby("Age_Group")["Revenue"].sum().reset_index()
+
+        fig = px.bar(
+        age,
+        x="Age_Group",
+        y="Revenue",
+        color="Age_Group",
+        title="Age Group"
+    )
+
+        fig.update_layout(
+        template="plotly_dark",
+        height=300
+    )
+
+        # st.plotly_chart(fig, use_container_width=True)
 
         fig.update_layout(template="plotly_dark")
 
         st.plotly_chart(fig, use_container_width=True)
+    with col4:
+
+        gender = df.groupby("Customer_Gender")["Order_Quantity"].sum().reset_index()
+
+        fig = px.pie(
+            gender,
+            names="Customer_Gender",
+            values="Order_Quantity",
+            hole=0.5,
+            title="Gender"
+        )
+
+        fig.update_layout(
+            template="plotly_dark",
+            height=300
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
+    col5, col6 = st.columns(2)
+    with col5:
+
+        sub_cat = (
+            df.groupby("Sub_Category")["Revenue"]
+            .sum()
+            .sort_values(ascending=False)
+            .reset_index()
+        )
+
+        fig = px.bar(
+            sub_cat,
+            x="Revenue",
+            y="Sub_Category",
+            orientation="h",
+            color="Revenue",
+            title="Revenue by Sub Category",
+            color_continuous_scale="Blues"
+        )
+
+        fig.update_layout(
+            template="plotly_dark",
+            height=350
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
+    with col6:
+        fig = px.histogram(
+            df,
+            x="Profit",
+            nbins=25,
+            title="Profit Distribution",
+            color_discrete_sequence=["orange"]
+        )
+
+        fig.update_layout(
+            template="plotly_dark",
+            height=350
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
+
 
     
 
@@ -610,6 +692,44 @@ elif menu=="Data Visualizations":
 elif menu == "Insights":
 
     st.title(" Insights")
+
+    st.markdown("---")
+
+    # ================= Top Performers =================
+
+    st.subheader("🏆 Top Performers")
+
+    best_product = df.groupby("Product")["Order_Quantity"].sum().idxmax()
+    top_country = df.groupby("Country")["Revenue"].sum().idxmax()
+    top_category = df.groupby("Product_Category")["Revenue"].sum().idxmax()
+
+    st.success(f"🏆 Best Selling Product : {best_product}")
+    st.info(f"🌍 Top Revenue Country : {top_country}")
+    st.warning(f"🚴 Top Product Category : {top_category}")
+    # ================= Key Insights =================
+    st.markdown("---")
+    st.markdown("---")
+    st.subheader("📌 Key Insights")
+
+    with st.expander("💰 Revenue Performance"):
+        st.write("Total revenue indicates strong business growth and healthy sales performance.")
+
+    with st.expander("🚴 Best Selling Category"):
+        st.write("The Bikes category contributes the highest share of total revenue.")
+
+    with st.expander("🌍 Top Performing Country"):
+        st.write("The leading country generates the maximum number of orders and revenue.")
+
+    with st.expander("📦 Customer Orders"):
+        st.write("Orders are well distributed across multiple product categories.")
+
+    with st.expander("📊 Business Overview"):
+        st.write("The dashboard provides a quick overview of revenue, profit, orders, and customer trends.")
+
+
+
+
+
     st.markdown("---")
 
     st.subheader("🚀 Future Scope")
@@ -634,31 +754,6 @@ elif menu == "Insights":
     This project demonstrates how data analysis can transform raw sales data into meaningful insights for better decision-making.
     """)
     st.markdown("---")
-
-    # ================= Key Insights =================
-
-    st.subheader("📌 Key Insights")
-
-    st.write("✅ Total revenue and profit show strong business performance.")
-    st.write("✅ Bikes category generated the highest revenue.")
-    st.write("✅ Sales are highest in the top-performing country.")
-    st.write("✅ Customer orders are distributed across multiple categories.")
-    st.write("✅ Dashboard helps monitor overall bike sales performance.")
-
-
-    st.markdown("---")
-
-    # ================= Top Performers =================
-
-    st.subheader("🏆 Top Performers")
-
-    best_product = df.groupby("Product")["Order_Quantity"].sum().idxmax()
-    top_country = df.groupby("Country")["Revenue"].sum().idxmax()
-    top_category = df.groupby("Product_Category")["Revenue"].sum().idxmax()
-
-    st.success(f"🏆 Best Selling Product : {best_product}")
-    st.info(f"🌍 Top Revenue Country : {top_country}")
-    st.warning(f"🚴 Top Product Category : {top_category}")
 
 
 
